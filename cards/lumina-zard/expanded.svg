@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1260" viewBox="0 0 900 1260">
+  <defs>
+    <radialGradient id="sky" cx=".52" cy=".35" r=".8">
+      <stop offset="0" stop-color="#fff0a6"/>
+      <stop offset=".28" stop-color="#ff8b42"/>
+      <stop offset=".62" stop-color="#7e1932"/>
+      <stop offset="1" stop-color="#0d0a12"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+  <rect width="900" height="1260" fill="url(#sky)"/>
+  <g opacity=".72" filter="url(#glow)">
+    <circle cx="314" cy="408" r="184" fill="#ffd33e"/>
+    <circle cx="626" cy="300" r="130" fill="#fff0a8"/>
+    <path d="M115 1080 C260 930 351 814 414 616 C477 786 582 954 785 1140 Z" fill="#ff4b2d"/>
+  </g>
+  <path d="M515 748 C641 650 723 518 738 328 C803 423 849 547 872 691 C744 644 631 678 543 820 Z" fill="#35131b"/>
+  <path d="M364 804 C242 685 169 538 169 340 C78 458 29 619 21 788 C151 703 268 706 376 872 Z" fill="#45181e"/>
+  <path d="M440 214 C574 230 662 331 657 491 C652 655 552 791 443 814 C318 784 236 648 250 492 C264 338 319 234 440 214 Z" fill="#d94428"/>
+  <path d="M336 465 C388 385 472 363 566 397 C541 311 463 268 372 304 C293 335 253 409 240 501 C268 488 300 477 336 465 Z" fill="#ffb445"/>
+  <path d="M472 222 L509 66 L546 231 Z" fill="#fff1a5"/>
+  <path d="M343 255 L292 95 L444 232 Z" fill="#fff1a5"/>
+  <path d="M558 367 C598 381 628 414 641 463 C598 431 557 423 518 441 Z" fill="#fff6c7"/>
+  <path d="M393 655 C446 713 536 696 590 620 C583 741 507 803 434 805 C357 787 288 710 279 620 C314 654 351 665 393 655 Z" fill="#7e1e1f"/>
+  <path d="M157 1162 C268 989 369 896 452 850 C563 897 674 1004 809 1214 Z" fill="#170c0d" opacity=".52"/>
+</svg>

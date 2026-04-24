@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1260" viewBox="0 0 900 1260">
+  <defs>
+    <radialGradient id="space" cx=".5" cy=".45" r=".76">
+      <stop offset="0" stop-color="#9a9a9a"/>
+      <stop offset=".72" stop-color="#343434"/>
+      <stop offset="1" stop-color="#111"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="1260" fill="url(#space)"/>
+  <path d="M515 748 C641 650 723 518 738 328 C803 423 849 547 872 691 C744 644 631 678 543 820 Z" fill="#747474"/>
+  <path d="M364 804 C242 685 169 538 169 340 C78 458 29 619 21 788 C151 703 268 706 376 872 Z" fill="#707070"/>
+  <path d="M440 214 C574 230 662 331 657 491 C652 655 552 791 443 814 C318 784 236 648 250 492 C264 338 319 234 440 214 Z" fill="#eeeeee"/>
+  <path d="M472 222 L509 66 L546 231 Z" fill="#fff"/>
+  <path d="M343 255 L292 95 L444 232 Z" fill="#f4f4f4"/>
+  <path d="M393 655 C446 713 536 696 590 620 C583 741 507 803 434 805 C357 787 288 710 279 620 C314 654 351 665 393 655 Z" fill="#bcbcbc"/>
+</svg>

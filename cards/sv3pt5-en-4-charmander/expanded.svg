@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1260" viewBox="0 0 900 1260">
+  <defs>
+    <radialGradient id="sky" cx=".5" cy=".36" r=".82">
+      <stop offset="0" stop-color="#fff7af"/>
+      <stop offset=".35" stop-color="#ff9a45"/>
+      <stop offset=".68" stop-color="#4bb86a"/>
+      <stop offset="1" stop-color="#18395d"/>
+    </radialGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="22"/></filter>
+    <clipPath id="round"><rect x="110" y="118" width="680" height="952" rx="34"/></clipPath>
+  </defs>
+  <rect width="900" height="1260" fill="url(#sky)"/>
+  <g filter="url(#blur)" opacity=".52">
+    <circle cx="213" cy="301" r="180" fill="#fff6a8"/>
+    <circle cx="720" cy="454" r="230" fill="#3ed07e"/>
+    <circle cx="404" cy="1050" r="260" fill="#ff713b"/>
+  </g>
+  <path d="M0 1010 C158 888 284 862 438 944 C587 1024 710 1017 900 896 L900 1260 L0 1260 Z" fill="#203b25" opacity=".78"/>
+  <path d="M54 836 C194 737 333 719 462 780 C602 847 725 832 870 720 L900 1260 L0 1260 Z" fill="#f5c85a" opacity=".48"/>
+  <g clip-path="url(#round)">
+    <image href="/cards/sv3pt5-en-4-charmander/card.png" x="110" y="118" width="680" height="952" preserveAspectRatio="xMidYMid slice" opacity=".76"/>
+  </g>
+  <rect x="110" y="118" width="680" height="952" rx="34" fill="none" stroke="#fff4aa" stroke-width="6" opacity=".34"/>
+  <text x="450" y="1136" text-anchor="middle" fill="#fff7df" font-family="Verdana, Arial, sans-serif" font-size="34" font-weight="700" opacity=".92">Charmander</text>
+</svg>

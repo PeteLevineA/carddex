@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1260" viewBox="0 0 900 1260">
+  <defs>
+    <radialGradient id="space" cx=".45" cy=".34" r=".78">
+      <stop offset="0" stop-color="#ffd9fb"/>
+      <stop offset=".28" stop-color="#ff4f8b"/>
+      <stop offset=".61" stop-color="#503ad4"/>
+      <stop offset="1" stop-color="#080912"/>
+    </radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="16"/></filter>
+  </defs>
+  <rect width="900" height="1260" fill="url(#space)"/>
+  <g filter="url(#soft)" opacity=".58">
+    <circle cx="196" cy="236" r="182" fill="#35f6dd"/>
+    <circle cx="672" cy="432" r="236" fill="#ff4f8b"/>
+    <circle cx="482" cy="1010" r="232" fill="#f6c945"/>
+  </g>
+  <path d="M92 126 L812 58 L690 388 L850 546 L566 622 L448 1148 L310 706 L62 594 L278 394 Z" fill="#ffffff" opacity=".22"/>
+  <path d="M438 202 C608 216 692 342 673 512 C655 690 524 830 384 816 C252 803 154 666 166 511 C178 348 278 219 438 202 Z" fill="#ffe1fb"/>
+  <path d="M388 292 C348 204 300 126 232 52 C361 82 454 150 516 252 Z" fill="#ffd0fb"/>
+  <path d="M502 300 C579 213 655 153 748 120 C700 224 649 307 596 372 Z" fill="#ffd0fb"/>
+  <path d="M603 690 C760 784 846 970 790 1216 C718 1015 600 905 437 868 Z" fill="#ffd0fb"/>
+  <path d="M286 762 C144 893 72 1056 83 1260 C168 1085 288 966 442 872 Z" fill="#ffd0fb"/>
+  <circle cx="365" cy="456" r="27" fill="#36234d"/>
+  <circle cx="514" cy="452" r="27" fill="#36234d"/>
+  <path d="M418 558 C458 596 520 589 557 548" fill="none" stroke="#36234d" stroke-width="21" stroke-linecap="round"/>
+</svg>

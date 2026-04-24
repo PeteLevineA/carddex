@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1260" viewBox="0 0 900 1260">
+  <defs>
+    <linearGradient id="border" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fbf6d0"/>
+      <stop offset=".34" stop-color="#fedb4a"/>
+      <stop offset=".62" stop-color="#32e6d0"/>
+      <stop offset="1" stop-color="#f7efa3"/>
+    </linearGradient>
+    <radialGradient id="field" cx=".48" cy=".43" r=".74">
+      <stop offset="0" stop-color="#fff8a2"/>
+      <stop offset=".34" stop-color="#4ef3dc"/>
+      <stop offset=".78" stop-color="#1e335a"/>
+      <stop offset="1" stop-color="#0c1017"/>
+    </radialGradient>
+    <linearGradient id="panel" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff9ba"/>
+      <stop offset="1" stop-color="#d8f8ea"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1260" rx="44" fill="url(#border)"/>
+  <rect x="34" y="34" width="832" height="1192" rx="34" fill="#142328" opacity=".86"/>
+  <rect x="52" y="52" width="796" height="1156" rx="28" fill="url(#border)"/>
+  <rect x="72" y="90" width="756" height="78" rx="22" fill="#fff6ad"/>
+  <text x="102" y="142" fill="#211c0b" font-family="Verdana, Arial, sans-serif" font-size="46" font-weight="700">Aurora Pikachu</text>
+  <text x="704" y="142" fill="#835c00" font-family="Verdana, Arial, sans-serif" font-size="34" font-weight="700">70 HP</text>
+  <circle cx="794" cy="123" r="24" fill="#f8cc28"/>
+  <rect x="84" y="178" width="732" height="430" rx="24" fill="url(#field)" stroke="#295963" stroke-width="12"/>
+  <path d="M126 245 C270 206 395 215 515 267 C625 315 719 317 788 277 L788 606 L126 606 Z" fill="#0c1924" opacity=".45"/>
+  <path d="M246 505 C306 427 355 337 390 237 C437 340 502 430 603 511 C480 556 365 556 246 505 Z" fill="#f8df38"/>
+  <path d="M350 266 L307 172 L404 238 Z" fill="#d0a51a"/>
+  <path d="M433 242 L526 170 L487 283 Z" fill="#d0a51a"/>
+  <circle cx="357" cy="395" r="23" fill="#2b1b0a"/>
+  <circle cx="492" cy="392" r="23" fill="#2b1b0a"/>
+  <circle cx="310" cy="450" r="38" fill="#ff5a66" opacity=".88"/>
+  <circle cx="540" cy="448" r="38" fill="#ff5a66" opacity=".88"/>
+  <path d="M395 450 C421 477 458 477 485 450" fill="none" stroke="#2b1b0a" stroke-width="16" stroke-linecap="round"/>
+  <path d="M597 337 L704 262 L652 384 L761 367 L628 475 L681 348 Z" fill="#fff48d" opacity=".92"/>
+  <path d="M170 374 L257 320 L222 411 L303 405 L203 496 L240 392 Z" fill="#fff48d" opacity=".74"/>
+  <rect x="96" y="630" width="708" height="46" rx="20" fill="#e5ffef"/>
+  <text x="121" y="662" fill="#245a58" font-family="Verdana, Arial, sans-serif" font-size="24" font-weight="700">Reverse Cosmos Surface</text>
+  <rect x="94" y="704" width="712" height="318" rx="22" fill="url(#panel)"/>
+  <text x="128" y="768" fill="#1c2b28" font-family="Verdana, Arial, sans-serif" font-size="30" font-weight="700">Static Bloom</text>
+  <text x="128" y="816" fill="#1c2b28" font-family="Verdana, Arial, sans-serif" font-size="25">Small moons of foil light the border</text>
+  <text x="128" y="854" fill="#1c2b28" font-family="Verdana, Arial, sans-serif" font-size="25">while the art stays mostly protected.</text>
+  <line x1="128" x2="772" y1="905" y2="905" stroke="#4c9d91" stroke-width="3" opacity=".45"/>
+  <text x="128" y="964" fill="#1c2b28" font-family="Verdana, Arial, sans-serif" font-size="30" font-weight="700">Aurora Sprint</text>
+  <text x="128" y="1011" fill="#1c2b28" font-family="Verdana, Arial, sans-serif" font-size="25">Electric arcs rise from the depth layer</text>
+  <text x="128" y="1049" fill="#1c2b28" font-family="Verdana, Arial, sans-serif" font-size="25">as the card tilts through the light.</text>
+  <rect x="96" y="1084" width="708" height="76" rx="18" fill="#ffffff" opacity=".62"/>
+  <text x="128" y="1132" fill="#245a58" font-family="Verdana, Arial, sans-serif" font-size="22">Weakness x2     Retreat 1     Neon Meadow</text>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1260" viewBox="0 0 900 1260">
+  <defs>
+    <radialGradient id="d" cx=".47" cy=".45" r=".75">
+      <stop offset="0" stop-color="#bdbdbd"/>
+      <stop offset=".62" stop-color="#4b4b4b"/>
+      <stop offset="1" stop-color="#121212"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="1260" fill="url(#d)"/>
+  <path d="M92 126 L812 58 L690 388 L850 546 L566 622 L448 1148 L310 706 L62 594 L278 394 Z" fill="#626262"/>
+  <path d="M438 202 C608 216 692 342 673 512 C655 690 524 830 384 816 C252 803 154 666 166 511 C178 348 278 219 438 202 Z" fill="#f1f1f1"/>
+  <path d="M388 292 C348 204 300 126 232 52 C361 82 454 150 516 252 Z" fill="#d7d7d7"/>
+  <path d="M502 300 C579 213 655 153 748 120 C700 224 649 307 596 372 Z" fill="#d7d7d7"/>
+  <path d="M603 690 C760 784 846 970 790 1216 C718 1015 600 905 437 868 Z" fill="#b8b8b8"/>
+  <path d="M286 762 C144 893 72 1056 83 1260 C168 1085 288 966 442 872 Z" fill="#b0b0b0"/>
+  <circle cx="365" cy="456" r="27" fill="#fff"/>
+  <circle cx="514" cy="452" r="27" fill="#fff"/>
+</svg>

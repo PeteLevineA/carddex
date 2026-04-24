@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1260" viewBox="0 0 900 1260">
+  <defs>
+    <radialGradient id="card" cx=".5" cy=".47" r=".7">
+      <stop offset="0" stop-color="#747474"/>
+      <stop offset=".75" stop-color="#353535"/>
+      <stop offset="1" stop-color="#151515"/>
+    </radialGradient>
+    <radialGradient id="art" cx=".48" cy=".46" r=".58">
+      <stop offset="0" stop-color="#eeeeee"/>
+      <stop offset=".5" stop-color="#999"/>
+      <stop offset="1" stop-color="#303030"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="1260" rx="44" fill="#151515"/>
+  <rect x="48" y="48" width="804" height="1164" rx="30" fill="url(#card)"/>
+  <rect x="84" y="178" width="732" height="430" rx="24" fill="url(#art)"/>
+  <path d="M246 505 C306 427 355 337 390 237 C437 340 502 430 603 511 C480 556 365 556 246 505 Z" fill="#ededed"/>
+  <path d="M350 266 L307 172 L404 238 Z" fill="#cfcfcf"/>
+  <path d="M433 242 L526 170 L487 283 Z" fill="#d5d5d5"/>
+  <path d="M597 337 L704 262 L652 384 L761 367 L628 475 L681 348 Z" fill="#fafafa"/>
+  <path d="M170 374 L257 320 L222 411 L303 405 L203 496 L240 392 Z" fill="#dbdbdb"/>
+  <rect x="94" y="704" width="712" height="318" rx="22" fill="#4b4b4b"/>
+</svg>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1260" viewBox="0 0 900 1260">
+  <defs>
+    <linearGradient id="gold" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff2a3"/>
+      <stop offset=".34" stop-color="#f5b949"/>
+      <stop offset=".72" stop-color="#b65b24"/>
+      <stop offset="1" stop-color="#ffe389"/>
+    </linearGradient>
+    <radialGradient id="fire" cx=".55" cy=".36" r=".72">
+      <stop offset="0" stop-color="#fff6ad"/>
+      <stop offset=".35" stop-color="#ff7e3f"/>
+      <stop offset=".72" stop-color="#7e1732"/>
+      <stop offset="1" stop-color="#19101a"/>
+    </radialGradient>
+    <linearGradient id="textPanel" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff4c7"/>
+      <stop offset="1" stop-color="#f0cc75"/>
+    </linearGradient>
+    <filter id="soft">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+  <rect width="900" height="1260" rx="44" fill="url(#gold)"/>
+  <rect x="34" y="34" width="832" height="1192" rx="34" fill="#241211" opacity=".9"/>
+  <rect x="52" y="52" width="796" height="1156" rx="28" fill="url(#gold)"/>
+  <rect x="72" y="90" width="756" height="78" rx="22" fill="#f8dfa2"/>
+  <text x="102" y="142" fill="#21130d" font-family="Verdana, Arial, sans-serif" font-size="46" font-weight="700">Lumina Charizard</text>
+  <text x="710" y="142" fill="#811e1d" font-family="Verdana, Arial, sans-serif" font-size="34" font-weight="700">160 HP</text>
+  <circle cx="797" cy="123" r="24" fill="#e1422c"/>
+  <rect x="84" y="178" width="732" height="430" rx="24" fill="url(#fire)" stroke="#5b2b14" stroke-width="12"/>
+  <g opacity=".55" filter="url(#soft)">
+    <circle cx="280" cy="330" r="118" fill="#ffcf3a"/>
+    <circle cx="575" cy="270" r="86" fill="#fff1a8"/>
+  </g>
+  <path d="M488 492 C566 435 620 380 633 295 C685 337 729 389 767 456 C681 443 620 462 551 538 Z" fill="#35141d"/>
+  <path d="M401 523 C323 455 284 384 282 288 C223 337 182 410 148 500 C233 473 308 486 377 548 Z" fill="#441a20"/>
+  <path d="M444 234 C537 248 594 313 586 406 C581 482 519 553 444 564 C357 554 302 476 310 396 C318 310 359 252 444 234 Z" fill="#d64227"/>
+  <path d="M382 385 C417 342 462 330 523 344 C507 295 462 270 405 286 C356 300 331 341 322 391 C337 388 357 387 382 385 Z" fill="#ffb442"/>
+  <path d="M461 239 L485 169 L506 245 Z" fill="#fff0a0"/>
+  <path d="M380 257 L353 191 L435 240 Z" fill="#fff0a0"/>
+  <path d="M519 286 C538 292 551 306 558 329 C533 318 512 316 494 324 Z" fill="#fff3c0"/>
+  <path d="M420 458 C452 486 501 480 533 441 C528 510 486 548 440 552 C394 545 357 508 351 451 C371 467 394 468 420 458 Z" fill="#7f1d1f"/>
+  <path d="M333 564 C399 529 494 535 560 576 C508 594 393 594 333 564 Z" fill="#22100f" opacity=".45"/>
+  <rect x="96" y="630" width="708" height="46" rx="20" fill="#f5d884"/>
+  <text x="121" y="662" fill="#5a2a13" font-family="Verdana, Arial, sans-serif" font-size="24" font-weight="700">Solar Roar</text>
+  <rect x="94" y="704" width="712" height="318" rx="22" fill="url(#textPanel)"/>
+  <text x="128" y="768" fill="#2d1a11" font-family="Verdana, Arial, sans-serif" font-size="30" font-weight="700">Radiant Wingbeat</text>
+  <text x="128" y="816" fill="#2d1a11" font-family="Verdana, Arial, sans-serif" font-size="25">A burst of heat bends the foil like</text>
+  <text x="128" y="854" fill="#2d1a11" font-family="Verdana, Arial, sans-serif" font-size="25">sunlight across a museum case.</text>
+  <line x1="128" x2="772" y1="905" y2="905" stroke="#9a632b" stroke-width="3" opacity=".45"/>
+  <text x="128" y="964" fill="#2d1a11" font-family="Verdana, Arial, sans-serif" font-size="30" font-weight="700">Ember Parallax</text>
+  <text x="128" y="1011" fill="#2d1a11" font-family="Verdana, Arial, sans-serif" font-size="25">Depth map displacement lifts the head,</text>
+  <text x="128" y="1049" fill="#2d1a11" font-family="Verdana, Arial, sans-serif" font-size="25">wings, and flame plumes.</text>
+  <rect x="96" y="1084" width="708" height="76" rx="18" fill="#fff3c9" opacity=".68"/>
+  <text x="128" y="1132" fill="#5a2a13" font-family="Verdana, Arial, sans-serif" font-size="22">Weakness x2     Retreat 3     Prism Archive</text>
+</svg>
