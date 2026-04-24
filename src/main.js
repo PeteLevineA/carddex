@@ -1,4 +1,5 @@
 import { createIcons, Box, Layers3, Maximize2, Minimize2, Pause, Play, RotateCcw, ScanLine, Sparkles, SunMedium } from "lucide";
+import "./style.css";
 import { CardScene } from "./render/CardScene.js";
 import { HOLO_PATTERNS, patternLabels } from "./data/cards.js";
 

@@ -4,22 +4,20 @@ A local 3D card viewer for processed Pokemon cards. It uses a Three.js shader to
 
 ## Run It
 
-This project can run without a build step:
-
-```bash
-python3 -m http.server 4173
-```
-
-Open `http://127.0.0.1:4173`.
-
-If Node is installed, Vite also works:
-
 ```bash
 npm install
 npm run dev
 ```
 
-The demo catalog includes three vector cards so the renderer works immediately. The static path uses CDN-hosted Three.js and Lucide; the Vite path uses the package dependencies.
+Then open the Vite URL. The demo catalog includes processed vector cards plus imported scans, so the renderer works immediately.
+
+## Build
+
+```bash
+npm run build
+```
+
+Netlify publishes the generated `dist` folder. Three.js, Lucide, CSS, and app code are bundled locally by Vite rather than loaded from a CDN import map.
 
 ## Add Cards
 

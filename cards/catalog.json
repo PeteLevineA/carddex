@@ -50,6 +50,31 @@
     "sourceImage": "../../Pictures/pokemon/SV3pt5_EN_4.png"
   },
   {
+    "id": "sv3pt5-en-5-charmeleon",
+    "name": "Charmeleon",
+    "subtitle": "Scarlet & Violet 151 physical card scan",
+    "set": "Scarlet & Violet 151",
+    "rarity": "Uncommon",
+    "number": "005/165",
+    "image": "/cards/sv3pt5-en-5-charmeleon/card.png",
+    "depth": "/cards/sv3pt5-en-5-charmeleon/depth.png",
+    "expandedImage": "/cards/sv3pt5-en-5-charmeleon/expanded.png",
+    "expandedDepth": "/cards/sv3pt5-en-5-charmeleon/expanded-depth.png",
+    "holoPattern": "starlight",
+    "holoCoverage": "artwork",
+    "artworkRegion": {
+      "x": 0.093,
+      "y": 0.518,
+      "w": 0.814,
+      "h": 0.341
+    },
+    "depthScale": 0.14,
+    "foilStrength": 1.22,
+    "accent": "#f36b31",
+    "processedAt": "2026-04-24T20:10:39.787Z",
+    "sourceImage": "cards/inbox/SV3pt5_EN_5.png"
+  },
+  {
     "id": "lumina-zard",
     "name": "Lumina Charizard",
     "subtitle": "Fire type / stage two / solar roar study",

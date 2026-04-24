@@ -1,0 +1,14 @@
+{
+  "id": "sv3pt5-en-5-charmeleon",
+  "name": "Charmeleon",
+  "subtitle": "Scarlet & Violet 151 physical card scan",
+  "set": "Scarlet & Violet 151",
+  "rarity": "Uncommon",
+  "number": "005/165",
+  "holoPattern": "starlight",
+  "holoCoverage": "artwork",
+  "artworkRegion": { "x": 0.093, "y": 0.518, "w": 0.814, "h": 0.341 },
+  "depthScale": 0.14,
+  "foilStrength": 1.22,
+  "accent": "#f36b31"
+}

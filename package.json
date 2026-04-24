@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "serve": "python3 -m http.server 4173",
-    "build": "vite build",
+    "build": "vite build && node scripts/copy-cards.mjs",
     "preview": "vite preview --host 0.0.0.0",
     "ingest": "node scripts/ingest-cards.mjs",
     "ingest:static": "python3 scripts/ingest-static.py",
+    "copy:cards": "node scripts/copy-cards.mjs",
     "catalog:demo": "node scripts/write-demo-catalog.mjs"
   },
   "dependencies": {
