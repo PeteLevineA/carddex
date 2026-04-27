@@ -38,12 +38,15 @@ export const frontFragmentShader = `
   uniform sampler2D uDepthMap;
   uniform float uTime;
   uniform float uFoilStrength;
+  uniform float uFoilReveal;
+  uniform float uFoilFocus;
   uniform float uExposure;
   uniform int uPattern;
   uniform int uCoverage;
   uniform vec4 uArtRect;
   uniform vec3 uLightPosition;
   uniform vec2 uMouse;
+  uniform vec2 uFoilHotspot;
   uniform float uExpanded;
 
   float hash12(vec2 p) {
@@ -193,14 +196,27 @@ export const frontFragmentShader = `
 
     float foilMask = coverageMask(vUv);
     float patternValue = pattern(vUv, angle);
-    float angleGate = smoothstep(0.08, 0.88, grazing + spec * 0.55 + abs(sin(angle + depth * 8.0)) * 0.18);
-    float foil = clamp(patternValue * foilMask * angleGate * uFoilStrength, 0.0, 1.45);
+    float focus = clamp(uFoilFocus, 0.0, 1.0);
+    float reveal = clamp(uFoilReveal, 0.0, 1.0);
+    float hotspotRadius = mix(1.12, 0.34, focus);
+    float hotspot = 1.0 - smoothstep(0.0, hotspotRadius, distance(vUv, uFoilHotspot));
+    float broadGrazing = smoothstep(0.015, 0.74, grazing);
+    float broadSpec = smoothstep(0.0, 0.50, spec);
+    float sweep = abs(sin(angle + depth * 8.0)) * mix(0.24, 0.12, focus);
+    float revealBias = mix(-0.08, 0.42, reveal);
+    float gateInput = broadGrazing * 0.58 + broadSpec * 0.74 + hotspot * 0.46 + sweep + revealBias;
+    float gateLow = mix(0.34, 0.14, reveal);
+    float gateHigh = mix(0.94, 0.56, reveal);
+    float angleGate = smoothstep(gateLow, gateHigh, gateInput);
+    angleGate = max(angleGate, reveal * mix(0.14, 0.34, 1.0 - focus));
+    float focusedPattern = pow(max(patternValue, 0.0), mix(0.72, 1.55, focus));
+    float foil = clamp(focusedPattern * foilMask * angleGate * uFoilStrength * mix(1.08, 1.62, reveal), 0.0, 1.72);
 
-    vec3 rainbow = spectral(vUv.x * 0.66 + vUv.y * 0.35 + angle * 0.09 + depth * 0.28);
+    vec3 rainbow = spectral(vUv.x * 0.66 + vUv.y * 0.35 + angle * 0.09 + depth * 0.28 + hotspot * 0.08);
     vec3 inkPreserve = mix(base, base * (0.75 + lambert * 0.35), 0.35);
-    vec3 holo = inkPreserve + rainbow * foil * (0.52 + grazing * 1.45);
-    vec3 glint = vec3(1.0, 0.94, 0.72) * spec * (0.65 + foilMask);
-    vec3 color = mix(base, holo, clamp(foil * 0.72, 0.0, 0.86)) + glint;
+    vec3 holo = inkPreserve + rainbow * foil * (0.64 + grazing * 1.30 + hotspot * 0.38);
+    vec3 glint = vec3(1.0, 0.94, 0.72) * (spec * 0.75 + hotspot * foil * 0.08) * (0.65 + foilMask);
+    vec3 color = mix(base, holo, clamp(foil * mix(0.58, 0.82, reveal), 0.0, 0.90)) + glint;
     color += base * lambert * 0.08 + depth * 0.035;
     color = pow(color * uExposure, vec3(0.92));
 

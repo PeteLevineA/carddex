@@ -32,7 +32,10 @@ export class CardScene {
     this.textureLoader = new TextureLoader();
     this.raycaster = new Raycaster();
     this.pointer = new Vector2();
-    this.lightPosition = new Vector3(-2.6, 3.0, 4.4);
+    this.lightPosition = new Vector3(-2.2, 2.7, 4.4);
+    this.foilHotspot = new Vector2(0.54, 0.58);
+    this.foilReveal = 0.72;
+    this.foilFocus = 0.36;
     this.expanded = false;
     this.autoRotate = false;
     this.targetRotation = new Vector2(-0.08, 0.22);
@@ -85,6 +88,30 @@ export class CardScene {
   setFoilStrength(value) {
     if (!this.frontMesh) return;
     this.frontMesh.material.uniforms.uFoilStrength.value = value;
+  }
+
+  setFoilReveal(value) {
+    this.foilReveal = value;
+    if (!this.frontMesh) return;
+    this.frontMesh.material.uniforms.uFoilReveal.value = value;
+  }
+
+  setFoilFocus(value) {
+    this.foilFocus = value;
+    if (!this.frontMesh) return;
+    this.frontMesh.material.uniforms.uFoilFocus.value = value;
+  }
+
+  setFoilHotspot(x, y) {
+    this.foilHotspot.set(x, y);
+    if (!this.frontMesh) return;
+    this.frontMesh.material.uniforms.uFoilHotspot.value.copy(this.foilHotspot);
+  }
+
+  setLightPosition(x, y, z) {
+    this.lightPosition.set(x, y, z);
+    if (!this.frontMesh) return;
+    this.frontMesh.material.uniforms.uLightPosition.value.copy(this.lightPosition);
   }
 
   setDepthScale(value) {
@@ -160,12 +187,15 @@ export class CardScene {
       uDepthMap: { value: this.textures.depth },
       uTime: { value: 0 },
       uFoilStrength: { value: this.card.foilStrength },
+      uFoilReveal: { value: this.foilReveal },
+      uFoilFocus: { value: this.foilFocus },
       uExposure: { value: 1 },
       uPattern: { value: patternId[this.card.holoPattern] },
       uCoverage: { value: coverageId[this.card.holoCoverage] },
       uArtRect: { value: new Vector4() },
-      uLightPosition: { value: this.lightPosition },
+      uLightPosition: { value: this.lightPosition.clone() },
       uMouse: { value: new Vector2() },
+      uFoilHotspot: { value: this.foilHotspot.clone() },
       uDepthScale: { value: this.card.depthScale },
       uCurve: { value: 0.024 },
       uExpanded: { value: 0 },

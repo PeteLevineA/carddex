@@ -17,6 +17,10 @@ const state = {
   activePattern: undefined,
   foilStrength: 1,
   depthScale: 0.12,
+  foilReveal: 0.72,
+  foilFocus: 0.36,
+  foilHotspot: { x: 0.54, y: 0.58 },
+  lightPosition: { x: -2.2, y: 2.7, z: 4.4 },
 };
 
 let scene;
@@ -40,6 +44,7 @@ async function bootstrap() {
     updateExpandButton();
   };
   await scene.setCard(state.selected);
+  applySceneTuning();
   scene.animate();
 
   window.addEventListener("resize", () => scene.resize());
@@ -134,6 +139,53 @@ function renderShell() {
           <input id="depth-scale" type="range" min="0" max="0.28" step="0.005" value="${state.depthScale}" />
         </label>
       </section>
+      <section class="control-block">
+        <div class="control-title">
+          <i data-lucide="sun-medium" aria-hidden="true"></i>
+          <span>Lighting</span>
+        </div>
+        <label class="slider-row">
+          <span>Light X</span>
+          <output id="light-x-output">${state.lightPosition.x.toFixed(1)}</output>
+          <input id="light-x" type="range" min="-6" max="6" step="0.1" value="${state.lightPosition.x}" />
+        </label>
+        <label class="slider-row">
+          <span>Light Y</span>
+          <output id="light-y-output">${state.lightPosition.y.toFixed(1)}</output>
+          <input id="light-y" type="range" min="-4" max="7" step="0.1" value="${state.lightPosition.y}" />
+        </label>
+        <label class="slider-row">
+          <span>Light Z</span>
+          <output id="light-z-output">${state.lightPosition.z.toFixed(1)}</output>
+          <input id="light-z" type="range" min="1.5" max="8" step="0.1" value="${state.lightPosition.z}" />
+        </label>
+      </section>
+      <section class="control-block">
+        <div class="control-title">
+          <i data-lucide="sparkles" aria-hidden="true"></i>
+          <span>Holo Response</span>
+        </div>
+        <label class="slider-row">
+          <span>Reveal</span>
+          <output id="foil-reveal-output">${state.foilReveal.toFixed(2)}</output>
+          <input id="foil-reveal" type="range" min="0" max="1" step="0.01" value="${state.foilReveal}" />
+        </label>
+        <label class="slider-row">
+          <span>Focus</span>
+          <output id="foil-focus-output">${state.foilFocus.toFixed(2)}</output>
+          <input id="foil-focus" type="range" min="0" max="1" step="0.01" value="${state.foilFocus}" />
+        </label>
+        <label class="slider-row">
+          <span>Hotspot X</span>
+          <output id="foil-hotspot-x-output">${state.foilHotspot.x.toFixed(2)}</output>
+          <input id="foil-hotspot-x" type="range" min="0" max="1" step="0.01" value="${state.foilHotspot.x}" />
+        </label>
+        <label class="slider-row">
+          <span>Hotspot Y</span>
+          <output id="foil-hotspot-y-output">${state.foilHotspot.y.toFixed(2)}</output>
+          <input id="foil-hotspot-y" type="range" min="0" max="1" step="0.01" value="${state.foilHotspot.y}" />
+        </label>
+      </section>
     </aside>
   `;
 
@@ -189,6 +241,7 @@ function bindControls() {
     await scene.setCard(next);
     scene.setFoilStrength(state.foilStrength);
     scene.setDepthScale(state.depthScale);
+    applySceneTuning();
     renderCardList(document.querySelector("#card-search")?.value ?? "");
     renderPatternGrid();
     updateInspector();
@@ -242,6 +295,53 @@ function bindControls() {
     if (output) output.value = state.depthScale.toFixed(2);
     if (hud) hud.textContent = state.depthScale.toFixed(2);
   });
+
+  bindTuningSlider("light-x", "light-x-output", 1, (value) => {
+    state.lightPosition.x = value;
+    applySceneTuning();
+  });
+  bindTuningSlider("light-y", "light-y-output", 1, (value) => {
+    state.lightPosition.y = value;
+    applySceneTuning();
+  });
+  bindTuningSlider("light-z", "light-z-output", 1, (value) => {
+    state.lightPosition.z = value;
+    applySceneTuning();
+  });
+  bindTuningSlider("foil-reveal", "foil-reveal-output", 2, (value) => {
+    state.foilReveal = value;
+    applySceneTuning();
+  });
+  bindTuningSlider("foil-focus", "foil-focus-output", 2, (value) => {
+    state.foilFocus = value;
+    applySceneTuning();
+  });
+  bindTuningSlider("foil-hotspot-x", "foil-hotspot-x-output", 2, (value) => {
+    state.foilHotspot.x = value;
+    applySceneTuning();
+  });
+  bindTuningSlider("foil-hotspot-y", "foil-hotspot-y-output", 2, (value) => {
+    state.foilHotspot.y = value;
+    applySceneTuning();
+  });
+}
+
+function bindTuningSlider(inputId, outputId, digits, onInput) {
+  const input = document.querySelector(`#${inputId}`);
+  const output = document.querySelector(`#${outputId}`);
+  input?.addEventListener("input", (event) => {
+    const value = Number(event.target.value);
+    onInput(value);
+    if (output) output.value = value.toFixed(digits);
+  });
+}
+
+function applySceneTuning() {
+  if (!scene) return;
+  scene.setLightPosition(state.lightPosition.x, state.lightPosition.y, state.lightPosition.z);
+  scene.setFoilReveal(state.foilReveal);
+  scene.setFoilFocus(state.foilFocus);
+  scene.setFoilHotspot(state.foilHotspot.x, state.foilHotspot.y);
 }
 
 function setExpanded(expanded) {
@@ -303,6 +403,20 @@ function updateInspector() {
   if (depthInput) depthInput.value = String(state.depthScale);
   if (foilOutput) foilOutput.value = state.foilStrength.toFixed(2);
   if (depthOutput) depthOutput.value = state.depthScale.toFixed(2);
+  setControlValue("light-x", "light-x-output", state.lightPosition.x, 1);
+  setControlValue("light-y", "light-y-output", state.lightPosition.y, 1);
+  setControlValue("light-z", "light-z-output", state.lightPosition.z, 1);
+  setControlValue("foil-reveal", "foil-reveal-output", state.foilReveal, 2);
+  setControlValue("foil-focus", "foil-focus-output", state.foilFocus, 2);
+  setControlValue("foil-hotspot-x", "foil-hotspot-x-output", state.foilHotspot.x, 2);
+  setControlValue("foil-hotspot-y", "foil-hotspot-y-output", state.foilHotspot.y, 2);
+}
+
+function setControlValue(inputId, outputId, value, digits) {
+  const input = document.querySelector(`#${inputId}`);
+  const output = document.querySelector(`#${outputId}`);
+  if (input) input.value = String(value);
+  if (output) output.value = value.toFixed(digits);
 }
 
 function hydrateIcons() {
