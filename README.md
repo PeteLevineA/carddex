@@ -1,54 +1,76 @@
-# Pokemon Card Lightbox
+# Carddex Monorepo
 
-A local 3D card viewer for processed Pokemon cards. It uses a Three.js shader to combine a front-card texture, a grayscale depth map, angle-sensitive holofoil patterns, and an expanded full-art view.
+Carddex is a multi-app project for viewing, scanning, and managing Pokémon cards.
 
-## Run It
+## Layout
+
+```
+.
+├── apps/
+│   ├── web/          # Vite + Three.js holofoil viewer (the original Pokemon Card Lightbox)
+│   └── ios/          # Native iOS app (SwiftUI + Metal + Vision + SwiftData)
+├── packages/
+│   ├── catalog/      # Shared card catalog schema, JSON Schema, JS types
+│   ├── ingest/       # Scripts to ingest scans + the Pokémon TCG API
+│   └── shaders/      # Canonical GLSL holofoil shaders (ported to MSL on iOS)
+├── assets/
+│   ├── cards/        # Per-card assets (front, depth, foil mask, expanded art, meta)
+│   └── catalog/      # Generated full Pokémon catalog (cards.json, sets.json, sqlite)
+├── tools/            # Cross-cutting build/dev tooling
+└── .github/workflows # CI: web build + iOS xcodebuild test
+```
+
+## Workspaces
+
+This repo uses npm workspaces. From the root:
 
 ```bash
 npm install
-npm run dev
+npm run dev          # runs the web app
+npm run build        # builds the web app
+npm run ingest       # ingest hand-processed scans (sharp + AI expand)
+npm run ingest:catalog   # pull the full Pokémon TCG API into assets/catalog/
 ```
 
-Then open the Vite URL. The demo catalog includes processed vector cards plus imported scans, so the renderer works immediately.
-
-## Build
+To target a specific workspace directly:
 
 ```bash
-npm run build
+npm run <script> -w @carddex/web
+npm run <script> -w @carddex/ingest
 ```
 
-Netlify publishes the generated `dist` folder. Three.js, Lucide, CSS, and app code are bundled locally by Vite rather than loaded from a CDN import map.
+## Web app
 
-## Add Cards
+See [`apps/web/README.md`](apps/web/README.md) for the holofoil viewer. The web app
+serves `/cards/*` from the shared `assets/cards/` directory at dev time, and copies
+that directory into `dist/cards` on build.
 
-Put high-resolution scans in `cards/inbox`. You can add a matching JSON sidecar to set the card name, holo pattern, artwork bounds, depth strength, and foil coverage. Processed web assets live alongside the catalog in `cards`.
+## iOS app
 
-```bash
-npm run ingest
-```
+See [`apps/ios/README.md`](apps/ios/README.md). The iOS app:
 
-The ingest script writes normalized assets into `cards/<card-id>` and updates `cards/catalog.json`.
+1. Has the same 3D holofoil tab, ported from the GLSL in `packages/shaders/` to Metal.
+2. Adds CollX-style **Scan** + **Collection** + **Browse** tabs.
+3. Uses Vision + a bundled Core ML model for offline identification, with optional
+   on-device LLM verification through Apple's Foundation Models framework when the
+   device supports Apple Intelligence, and an opt-in cloud fallback to the Pokémon TCG API.
+4. Persists scans, collection items, and cached catalog rows with SwiftData and
+   syncs across devices via CloudKit.
 
-When Node or Sharp are unavailable, use the static fallback:
+## Catalog
 
-```bash
-python3 scripts/ingest-static.py /path/to/card.png --id my-card --name "My Card"
-```
+The canonical Pokémon catalog is generated from <https://pokemontcg.io>. Re-run
+`npm run ingest:catalog` to refresh `assets/catalog/cards.json`, the per-set
+indices, and the SQLite snapshot consumed by the iOS app.
 
-## AI Expanded Art
+## CI
 
-The ingestion pipeline can call the OpenAI Images API for full-art expansion and optional AI depth maps:
+GitHub Actions runs two jobs on every PR:
 
-```bash
-OPENAI_API_KEY=... npm run ingest -- --expand --ai-depth
-```
+* **web** — Node 20, `npm ci && npm run build -w @carddex/web`.
+* **ios** — macOS runner, `xcodebuild test` against an iPhone 16 Pro simulator.
 
-`OPENAI_IMAGE_MODEL` defaults to `gpt-image-2` and can be changed without editing code.
+## License
 
-## Holofoil Renderer
-
-The shader currently includes these families: starlight, cosmos, tinsel, sheen, cracked ice, crosshatch, water web, sequin, fireworks, and plain foil. Each pattern is rendered procedurally and gated by view angle, light direction, depth, and coverage mode.
-
-## Depth Maps
-
-Depth maps are grayscale images where white comes forward and black recedes. The included heuristic is intentionally conservative: it uses luminance, center falloff, edge falloff, and the artwork region to create a Facebook-style relief effect. Replace generated maps with higher-quality depth maps whenever you have them.
+See individual package licenses. Card images are © The Pokémon Company; the
+catalog ingest pipeline only redistributes thumbnails fetched on demand.

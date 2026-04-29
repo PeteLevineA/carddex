@@ -1,24 +1,20 @@
 {
-  "name": "pokemon-card-lightbox",
+  "name": "carddex",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
+  "description": "Carddex monorepo: web Pokemon card holofoil viewer + iOS app with scanning and identification.",
+  "workspaces": [
+    "apps/web",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
-    "build": "vite build && node scripts/copy-cards.mjs",
-    "preview": "vite preview --host 0.0.0.0",
-    "ingest": "node scripts/ingest-cards.mjs",
-    "ingest:static": "python3 scripts/ingest-static.py",
-    "copy:cards": "node scripts/copy-cards.mjs",
-    "catalog:demo": "node scripts/write-demo-catalog.mjs"
-  },
-  "dependencies": {
-    "lucide": "^0.468.0",
-    "openai": "latest",
-    "sharp": "latest",
-    "three": "^0.164.1"
-  },
-  "devDependencies": {
-    "vite": "latest"
+    "dev": "npm run dev -w @carddex/web",
+    "build": "npm run build -w @carddex/web",
+    "preview": "npm run preview -w @carddex/web",
+    "ingest": "npm run ingest -w @carddex/ingest",
+    "ingest:static": "npm run ingest:static -w @carddex/ingest",
+    "ingest:catalog": "npm run ingest:catalog -w @carddex/ingest",
+    "catalog:demo": "npm run catalog:demo -w @carddex/ingest",
+    "lint": "echo 'add eslint here'"
   }
 }

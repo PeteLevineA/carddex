@@ -1,0 +1,12 @@
+{
+  "name": "@carddex/catalog",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared card-catalog schema and types used by the web viewer and the iOS app.",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./schema": "./src/schema.json"
+  }
+}

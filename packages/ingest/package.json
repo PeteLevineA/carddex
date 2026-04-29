@@ -1,0 +1,17 @@
+{
+  "name": "@carddex/ingest",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Ingestion pipelines for Carddex: process scans into the holofoil viewer assets, and pull the full Pokémon TCG catalog into the shared catalog directory.",
+  "scripts": {
+    "ingest": "node scripts/ingest-cards.mjs",
+    "ingest:static": "python3 scripts/ingest-static.py",
+    "ingest:catalog": "node scripts/ingest-catalog.mjs",
+    "catalog:demo": "node scripts/write-demo-catalog.mjs"
+  },
+  "dependencies": {
+    "openai": "^4.65.0",
+    "sharp": "^0.33.0"
+  }
+}

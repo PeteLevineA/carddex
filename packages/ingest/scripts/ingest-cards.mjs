@@ -8,9 +8,13 @@ import { generateExpandedArt, generateExpandedDepthMap } from "./lib/openai-expa
 
 const cwd = process.cwd();
 const args = parseArgs(process.argv.slice(2));
-const inputDir = path.resolve(cwd, args.input ?? "cards/inbox");
-const publicCardsDir = path.resolve(cwd, args.output ?? "cards");
-const catalogPath = path.resolve(cwd, args.catalog ?? "cards/catalog.json");
+// Resolve defaults against the repo root so the script works regardless of
+// whether it is invoked from the workspace or the package directory.
+const here = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(here, "../../..");
+const inputDir = path.resolve(cwd, args.input ?? path.join(repoRoot, "assets/cards/inbox"));
+const publicCardsDir = path.resolve(cwd, args.output ?? path.join(repoRoot, "assets/cards"));
+const catalogPath = path.resolve(cwd, args.catalog ?? path.join(repoRoot, "assets/cards/catalog.json"));
 const shouldUseAiExpand = Boolean(args.expand);
 const shouldUseAiDepth = Boolean(args["ai-depth"]);
 
