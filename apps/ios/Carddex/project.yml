@@ -2,8 +2,8 @@ name: Carddex
 options:
   bundleIdPrefix: com.carddex
   deploymentTarget:
-    iOS: "18.0"
-    visionOS: "2.0"
+    iOS: "24.0"
+    visionOS: "24.0"
   developmentLanguage: en
 
 # The Swift Package next to this file owns all non-UI logic. The Xcode targets

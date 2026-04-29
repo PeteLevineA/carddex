@@ -11,8 +11,8 @@ let package = Package(
     name: "Carddex",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v18),
-        .visionOS(.v2),
+        .iOS("24.0"),
+        .visionOS("24.0"),
     ],
     products: [
         .library(name: "CarddexCore",     targets: ["CarddexCore"]),
