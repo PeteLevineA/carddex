@@ -91,7 +91,7 @@ public enum HoloPattern: String, Codable, CaseIterable, Sendable {
 }
 
 public enum HoloCoverage: String, Codable, CaseIterable, Sendable {
-    case full, reverse, art, stamp, none
+    case artwork, full, reverse
 }
 
 // MARK: - SwiftData models (mutable, per-user, CloudKit-synced)

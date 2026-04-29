@@ -5,7 +5,7 @@ Reads `assets/catalog/cards.json` (produced by `npm run ingest:catalog`) and
 emits:
 
   * assets/catalog/embeddings.bin   — packed float32 image embeddings
-  * assets/catalog/carddex.sqlite   — sets, cards, embeddings, aliases tables
+  * assets/catalog/carddex.sqlite   — sets and cards tables (with embedding offsets)
 
 This script is a placeholder skeleton: real production use should plug in the
 same Core ML model that ships in the iOS app so the embedding space is shared

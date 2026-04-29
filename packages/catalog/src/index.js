@@ -8,7 +8,7 @@ export const HoloPatterns = Object.freeze([
 ]);
 
 export const HoloCoverages = Object.freeze([
-  "full", "reverse", "art", "stamp", "none",
+  "artwork", "full", "reverse",
 ]);
 
 /**

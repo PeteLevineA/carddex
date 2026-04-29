@@ -30,7 +30,7 @@
         },
         "holoCoverage": {
           "type": "string",
-          "enum": ["full", "reverse", "art", "stamp", "none"]
+          "enum": ["artwork", "full", "reverse"]
         },
         "artworkRegion": { "$ref": "#/definitions/Region" },
         "depthScale":    { "type": "number" },
