@@ -87,9 +87,12 @@ public struct ReviewCapturedCardsView: View {
             dismiss()
         } catch {
             // Cleanup any partial work to avoid orphan files / dangling
-            // unsaved inserts in the context.
-            for scan in insertedScans { modelContext.delete(scan) }
+            // unsaved inserts in the context. CollectionItem cascades to
+            // its scans, so delete items first and let SwiftData handle the
+            // relationship; any scans that survive (e.g. from earlier
+            // failures) are explicitly removed afterwards.
             for item in insertedItems { modelContext.delete(item) }
+            for scan in insertedScans { modelContext.delete(scan) }
             for url in writtenURLs { try? FileManager.default.removeItem(at: url) }
             saveError = error.localizedDescription
         }
