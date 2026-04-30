@@ -1,0 +1,113 @@
+name: Carddex
+options:
+  bundleIdPrefix: com.carddex
+  deploymentTarget:
+    iOS: "24.0"
+    visionOS: "24.0"
+  developmentLanguage: en
+
+# The Swift Package next to this file owns all non-UI logic. The Xcode targets
+# below add SwiftUI views, App Intents, Widgets, Live Activities, and the App
+# Clip on top.
+packages:
+  Carddex:
+    path: .
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    ENABLE_USER_SCRIPT_SANDBOXING: "YES"
+    SWIFT_STRICT_CONCURRENCY: complete
+
+targets:
+  Carddex:
+    type: application
+    platform: iOS
+    sources:
+      - App
+      - Intents
+      - LiveActivities
+    resources:
+      - App/Resources
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Carddex
+        UILaunchScreen: {}
+        NSCameraUsageDescription: "Carddex uses the camera to scan and identify Pokémon cards."
+        NSPhotoLibraryAddUsageDescription: "Carddex saves a copy of confirmed scans to your Photos library."
+        NSPhotoLibraryUsageDescription: "Carddex can pick existing photos to identify."
+        NSLocationWhenInUseUsageDescription: "Carddex tags scans with your location only if you opt in."
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: true
+        NSAppleMusicUsageDescription: ""
+        UIBackgroundModes:
+          - processing
+        BGTaskSchedulerPermittedIdentifiers:
+          - com.carddex.app.reidentify
+    entitlements:
+      path: App/Carddex.entitlements
+      properties:
+        com.apple.developer.icloud-services:
+          - CloudDocuments
+          - CloudKit
+        com.apple.developer.icloud-container-identifiers:
+          - iCloud.com.carddex.app
+        com.apple.developer.applesignin:
+          - Default
+    dependencies:
+      - package: Carddex
+        product: CarddexCore
+      - package: Carddex
+        product: CarddexCatalog
+      - package: Carddex
+        product: CarddexScanner
+      - package: Carddex
+        product: CarddexHolofoil
+      - package: Carddex
+        product: CarddexUI
+      - target: CarddexWidgets
+      - target: CarddexAppClip
+
+  CarddexWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Widgets
+    info:
+      path: Widgets/Info.plist
+      properties:
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    dependencies:
+      - package: Carddex
+        product: CarddexCore
+      - package: Carddex
+        product: CarddexCatalog
+
+  CarddexAppClip:
+    type: application.on-demand-install-capable
+    platform: iOS
+    sources:
+      - AppClip
+    info:
+      path: AppClip/Info.plist
+    dependencies:
+      - package: Carddex
+        product: CarddexUI
+      - package: Carddex
+        product: CarddexCatalog
+
+schemes:
+  Carddex:
+    build:
+      targets:
+        Carddex: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - package: Carddex/CarddexCoreTests
+        - package: Carddex/CarddexCatalogTests
+        - package: Carddex/CarddexScannerTests

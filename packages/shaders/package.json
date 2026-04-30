@@ -1,0 +1,8 @@
+{
+  "name": "@carddex/shaders",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Canonical GLSL shader source for the Carddex holofoil renderer. The web app imports this directly; the iOS app hand-ports each pattern to MSL with golden-image parity tests.",
+  "main": "src/index.js"
+}

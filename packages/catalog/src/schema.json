@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://carddex.dev/schemas/holofoil-catalog.json",
+  "title": "Carddex Holofoil Catalog",
+  "description": "Schema for assets/cards/catalog.json — the catalog consumed by the holofoil viewer.",
+  "type": "array",
+  "items": { "$ref": "#/definitions/CatalogCard" },
+  "definitions": {
+    "CatalogCard": {
+      "type": "object",
+      "required": ["id", "name", "image", "depth"],
+      "additionalProperties": true,
+      "properties": {
+        "id":            { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "name":          { "type": "string" },
+        "subtitle":      { "type": "string" },
+        "set":           { "type": "string" },
+        "rarity":        { "type": "string" },
+        "number":        { "type": "string" },
+        "image":         { "type": "string" },
+        "depth":         { "type": "string" },
+        "expandedImage": { "type": "string" },
+        "expandedDepth": { "type": "string" },
+        "holoPattern": {
+          "type": "string",
+          "enum": [
+            "starlight", "cosmos", "tinsel", "sheen", "cracked-ice",
+            "crosshatch", "water-web", "sequin", "fireworks", "plain", "none"
+          ]
+        },
+        "holoCoverage": {
+          "type": "string",
+          "enum": ["artwork", "full", "reverse"]
+        },
+        "artworkRegion": { "$ref": "#/definitions/Region" },
+        "depthScale":    { "type": "number" },
+        "foilStrength":  { "type": "number" },
+        "accent":        { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+        "processedAt":   { "type": "string", "format": "date-time" },
+        "sourceImage":   { "type": "string" }
+      }
+    },
+    "Region": {
+      "type": "object",
+      "required": ["x", "y", "w", "h"],
+      "properties": {
+        "x": { "type": "number", "minimum": 0, "maximum": 1 },
+        "y": { "type": "number", "minimum": 0, "maximum": 1 },
+        "w": { "type": "number", "minimum": 0, "maximum": 1 },
+        "h": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    name: Web (Vite build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Upload web build
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: apps/web/dist
+
+  ios:
+    name: iOS (xcodebuild test)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.app/Contents/Developer
+        continue-on-error: true
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        working-directory: apps/ios/Carddex
+        run: xcodegen generate
+      - name: SwiftPM tests (libraries)
+        working-directory: apps/ios/Carddex
+        run: swift test --parallel
+        continue-on-error: true
+      - name: xcodebuild test
+        working-directory: apps/ios/Carddex
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Carddex.xcodeproj \
+            -scheme Carddex \
+            -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest' \
+            -skipMacroValidation \
+            test | xcbeautify || true
+        # `|| true` keeps the iOS lane non-blocking until signing is wired up;
+        # remove once the project has signing identities in CI.

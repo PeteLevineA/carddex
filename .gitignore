@@ -1,6 +1,33 @@
+# Node
 node_modules/
-dist/
-.env
 npm-debug.log*
-public/cards/
+.env
 .netlify/
+
+# Web build outputs
+apps/web/dist/
+apps/web/public/cards/
+
+# Generated catalog (large; regenerate with `npm run ingest:catalog`)
+assets/catalog/cards.json
+assets/catalog/cards/
+assets/catalog/carddex.sqlite
+assets/catalog/embeddings.bin
+
+# iOS / Xcode
+apps/ios/**/build/
+apps/ios/**/DerivedData/
+apps/ios/**/*.xcuserstate
+apps/ios/**/xcuserdata/
+apps/ios/**/.swiftpm/
+apps/ios/**/.build/
+apps/ios/**/Package.resolved
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
