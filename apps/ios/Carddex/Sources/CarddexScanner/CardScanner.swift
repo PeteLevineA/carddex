@@ -84,7 +84,7 @@ public actor CardScanner {
         // Tier B — Foundation Models verification (best-effort, no-op if unavailable).
         if let top = ranked.first, top.confidence < settings.minTierAConfidenceForAutoAccept {
             if let refined = await FoundationModelsVerifier.verify(
-                ocrText: ocr, candidates: ranked.prefix(5).map { $0 }
+                ocrText: ocr, candidates: ranked.prefix(5)
             ) {
                 ranked = refined
                 tier = .tierB
@@ -125,7 +125,7 @@ public actor CardScanner {
         } else if let number = parsed.number {
             // Unknown set, but number is unique enough across many sets when
             // combined with a name match.
-            let candidates = await catalog.allCards().filter { $0.number == number }
+            let candidates = (await catalog.allCards()).filter { $0.number == number }
             for c in candidates.prefix(20) {
                 let nameScore = parsed.name.map { Self.nameSimilarity($0, c.name) } ?? 0.5
                 matches.append(Match(cardId: c.id, setId: c.setId, number: c.number,

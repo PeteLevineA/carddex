@@ -18,8 +18,8 @@ public final class HolofoilRenderer: NSObject, MTKViewDelegate {
 
     private let frontTexture: MTLTexture
     private let depthTexture: MTLTexture
-    private let foilTexture: MTLTexture?
-    private let expandedTexture: MTLTexture?
+    private let foilMaskTexture: MTLTexture?
+    private let expandedColorTexture: MTLTexture?
 
     /// Uniforms updated per-frame. Mirrors `frontFragmentShader`'s uniforms.
     public struct Uniforms {
@@ -47,8 +47,14 @@ public final class HolofoilRenderer: NSObject, MTKViewDelegate {
         self.queue = queue
         self.frontTexture = front
         self.depthTexture = depth
-        self.foilTexture = card.expandedImage.flatMap { try? textureLoader.load($0, on: device) }
-        self.expandedTexture = card.expandedDepth.flatMap { try? textureLoader.load($0, on: device) }
+        // The bundled catalog only carries front colour + depth and an
+        // *expanded* colour image (the holo region rendered at full extent).
+        // We don't ship a dedicated foil mask asset yet, so we sample the
+        // front texture's alpha as the mask in the shader's index-2 slot
+        // and bind the expanded colour image — when present — into the
+        // shader's index-3 slot, matching `holofoil_fragment`'s parameters.
+        self.foilMaskTexture = nil
+        self.expandedColorTexture = card.expandedImage.flatMap { try? textureLoader.load($0, on: device) }
         super.init()
         view.device = device
         view.colorPixelFormat = .bgra8Unorm
@@ -72,8 +78,8 @@ public final class HolofoilRenderer: NSObject, MTKViewDelegate {
         encoder.setRenderPipelineState(pipeline)
         encoder.setFragmentTexture(frontTexture, index: 0)
         encoder.setFragmentTexture(depthTexture, index: 1)
-        encoder.setFragmentTexture(foilTexture ?? frontTexture, index: 2)
-        encoder.setFragmentTexture(expandedTexture ?? depthTexture, index: 3)
+        encoder.setFragmentTexture(foilMaskTexture ?? frontTexture, index: 2)
+        encoder.setFragmentTexture(expandedColorTexture ?? frontTexture, index: 3)
         var u = uniforms
         encoder.setVertexBytes(&u,   length: MemoryLayout<Uniforms>.stride, index: 1)
         encoder.setFragmentBytes(&u, length: MemoryLayout<Uniforms>.stride, index: 0)

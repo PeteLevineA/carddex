@@ -26,6 +26,10 @@ function serveSharedCards() {
             ".jpg": "image/jpeg",
             ".jpeg": "image/jpeg",
             ".webp": "image/webp",
+            ".svg": "image/svg+xml",
+            ".gif": "image/gif",
+            ".avif": "image/avif",
+            ".heic": "image/heic",
           };
           res.setHeader("Content-Type", types[ext] ?? "application/octet-stream");
           fs.createReadStream(filePath).pipe(res);

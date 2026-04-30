@@ -48,7 +48,10 @@ public struct ReviewCapturedCardsView: View {
                 .disabled(isSaving || capturedCards.isEmpty)
             }
         }
-        .alert("Couldn't save", isPresented: .constant(saveError != nil)) {
+        .alert("Couldn't save", isPresented: Binding(
+            get: { saveError != nil },
+            set: { if !$0 { saveError = nil } }
+        )) {
             Button("OK") { saveError = nil }
         } message: {
             Text(saveError ?? "")
@@ -63,21 +66,39 @@ public struct ReviewCapturedCardsView: View {
     private func saveAll() async {
         isSaving = true
         defer { isSaving = false }
+
+        // Track side-effects so we can roll them back if any insert / file
+        // write throws partway through. The `ModelContext` won't have flushed
+        // anything to the store until `.save()`, so deleting the inserted
+        // objects + the HEIC files is sufficient to restore prior state.
+        var writtenURLs: [URL] = []
+        var insertedItems: [CollectionItem] = []
+        var insertedScans: [Scan] = []
+
         do {
             for card in capturedCards {
-                try persist(card)
+                let (url, item, scan) = try persist(card)
+                writtenURLs.append(url)
+                insertedItems.append(item)
+                insertedScans.append(scan)
             }
             try modelContext.save()
             capturedCards.removeAll()
             dismiss()
         } catch {
+            // Cleanup any partial work to avoid orphan files / dangling
+            // unsaved inserts in the context.
+            for scan in insertedScans { modelContext.delete(scan) }
+            for item in insertedItems { modelContext.delete(item) }
+            for url in writtenURLs { try? FileManager.default.removeItem(at: url) }
             saveError = error.localizedDescription
         }
     }
 
     /// Writes the cropped HEIC to `Application Support/scans/` and inserts the
-    /// linked `CollectionItem` + `Scan` records.
-    private func persist(_ card: CapturedCard) throws {
+    /// linked `CollectionItem` + `Scan` records. Returns the resources created
+    /// so the caller can roll them back on failure.
+    private func persist(_ card: CapturedCard) throws -> (URL, CollectionItem, Scan) {
         let fileName = "\(card.id.uuidString).heic"
         let url = CarddexStorage.scansDirectory.appendingPathComponent(fileName)
         try card.imageData.write(to: url, options: [.atomic])
@@ -108,6 +129,7 @@ public struct ReviewCapturedCardsView: View {
 
         modelContext.insert(item)
         modelContext.insert(scan)
+        return (url, item, scan)
     }
 }
 

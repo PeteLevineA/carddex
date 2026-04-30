@@ -10,8 +10,10 @@ emits:
 This script is a placeholder skeleton: real production use should plug in the
 same Core ML model that ships in the iOS app so the embedding space is shared
 between scan-time inference and the precomputed catalog index. We use a
-deterministic perceptual hash here so the artifact is reproducible without any
-ML dependencies, and the iOS scanner can swap in a real model later.
+deterministic SHA-256-derived embedding of the card id here so the artifact is
+reproducible without any ML dependencies — note this is *not* a perceptual hash
+and the output does not correlate with image similarity. The iOS scanner can
+swap in a real model later.
 
 Usage:
     python3 tools/build-embeddings.py [--limit N]
@@ -44,6 +46,20 @@ def stable_embedding(card_id: str) -> list[float]:
             if len(out) == EMBEDDING_DIM:
                 break
     return out
+
+
+_REQUIRED_CARD_FIELDS = ("id", "setId", "number", "name")
+
+
+def _has_required_fields(card: dict) -> bool:
+    """True if the card row has every NOT NULL column filled in."""
+    missing = [k for k in _REQUIRED_CARD_FIELDS if not card.get(k)]
+    if missing:
+        print(
+            f"  skipping card {card.get('id') or '<no-id>'}: missing {missing}"
+        )
+        return False
+    return True
 
 
 def main() -> int:
@@ -111,14 +127,15 @@ def main() -> int:
         [
             (
                 c["id"],
-                c.get("setId"),
-                c.get("number"),
-                c.get("name"),
+                c["setId"],
+                c["number"],
+                c["name"],
                 c.get("rarity"),
                 (c.get("images") or {}).get("small"),
                 idx * EMBEDDING_DIM * 4,
             )
             for idx, c in enumerate(cards)
+            if _has_required_fields(c)
         ],
     )
     conn.commit()

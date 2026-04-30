@@ -19,7 +19,14 @@ struct CardOfTheDayProvider: TimelineProvider {
         Task {
             await CatalogStore.shared.bootstrap()
             let cards = await CatalogStore.shared.allHolofoilCards()
-            let pick = cards[Calendar.current.ordinality(of: .day, in: .year, for: .now) ?? 0 % max(cards.count, 1)]
+            guard !cards.isEmpty else {
+                let entry = placeholder(in: context)
+                let next = Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now
+                completion(Timeline(entries: [entry], policy: .after(next)))
+                return
+            }
+            let dayOfYear = Calendar.current.ordinality(of: .day, in: .year, for: .now) ?? 0
+            let pick = cards[(dayOfYear) % cards.count]
             let entry = CardOfTheDayEntry(date: .now, name: pick.name, set: pick.set ?? "")
             // Refresh once per day.
             let next = Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now

@@ -18,6 +18,12 @@ public struct ScanTab: View {
 
     @Environment(\.modelContext) private var modelContext
 
+    // Scanner settings come from the same `@AppStorage` keys SettingsTab
+    // writes to, so toggling cloud lookups or pasting an API key takes
+    // effect on the very next capture without restarting the tab.
+    @AppStorage("carddex.allowCloudFallback") private var allowCloudFallback = false
+    @AppStorage("carddex.tcgApiKey")          private var tcgApiKey = ""
+
     /// Cards captured this session, awaiting review/save. Held in `@State`
     /// rather than SwiftData so abandoned sessions don't litter the store.
     @State private var capturedCards: [CapturedCard] = []
@@ -25,6 +31,10 @@ public struct ScanTab: View {
     @State private var isScanning = false
     @State private var error: String?
     @State private var goToReview = false
+
+    /// Reused across captures so the actor's state (settings, cached catalog
+    /// handles) is preserved between identifications.
+    @State private var scanner: CardScanner = CardScanner()
 
     public init() {}
 
@@ -65,7 +75,10 @@ public struct ScanTab: View {
                         .padding(.top, 8)
                 }
             }
-            .alert("Scan failed", isPresented: .constant(error != nil)) {
+            .alert("Scan failed", isPresented: Binding(
+                get: { error != nil },
+                set: { if !$0 { error = nil } }
+            )) {
                 Button("OK") { error = nil }
             } message: {
                 Text(error ?? "")
@@ -73,6 +86,16 @@ public struct ScanTab: View {
             .navigationTitle("Scan")
             .navigationDestination(isPresented: $goToReview) {
                 ReviewCapturedCardsView(capturedCards: $capturedCards)
+            }
+            .task(id: tcgApiKey) {
+                // Rebuild the scanner whenever the API key changes so the
+                // cloud client picks it up. (CardScanner's cloud client is
+                // configured at init time.)
+                let key = tcgApiKey.isEmpty ? nil : tcgApiKey
+                scanner = CardScanner(
+                    cloudClient: PokemonTCGClient(configuration: .init(apiKey: key)),
+                    settings: CardScanner.Settings(allowCloudFallback: allowCloudFallback)
+                )
             }
         }
     }
@@ -83,7 +106,10 @@ public struct ScanTab: View {
     private func runIdentification(on image: CGImage) async {
         isScanning = true
         defer { isScanning = false }
-        let scanner = CardScanner()
+        // Push the latest user preferences into the long-lived scanner so
+        // Tier C honors `Allow cloud lookups` and the API key entered in
+        // SettingsTab.
+        await scanner.updateSettings(CardScanner.Settings(allowCloudFallback: allowCloudFallback))
         #if canImport(Vision)
         let result = await scanner.identify(image: image)
         guard result.bestMatch != nil, let imageData = result.croppedImageData else {

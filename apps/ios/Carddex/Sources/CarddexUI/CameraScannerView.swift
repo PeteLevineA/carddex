@@ -7,7 +7,9 @@ import UIKit
 
 /// SwiftUI wrapper around `DataScannerViewController` with an AVFoundation
 /// fallback for devices that don't support DataScanner. The `onCaptureFrame`
-/// closure is called with a stable, debounced still after a card is detected.
+/// closure is called with a stable, debounced still after the user taps the
+/// preview (DataScanner: tap a recognized text region or anywhere via the
+/// gesture recognizer; AVFoundation: tap-to-capture).
 public struct CameraScannerView: UIViewControllerRepresentable {
 
     public var onCaptureFrame: (CGImage) -> Void
@@ -18,8 +20,12 @@ public struct CameraScannerView: UIViewControllerRepresentable {
 
     public func makeUIViewController(context: Context) -> UIViewController {
         if DataScannerViewController.isSupported && DataScannerViewController.isAvailable {
+            // Pokémon cards aren't barcoded, so we recognize text — the OCR'd
+            // card number / name region — which gives the user something to
+            // tap on, and we additionally install a full-view tap recognizer
+            // for "tap anywhere to capture".
             let vc = DataScannerViewController(
-                recognizedDataTypes: [.barcode()],
+                recognizedDataTypes: [.text()],
                 qualityLevel: .balanced,
                 recognizesMultipleItems: false,
                 isHighFrameRateTrackingEnabled: true,
@@ -28,6 +34,13 @@ public struct CameraScannerView: UIViewControllerRepresentable {
                 isHighlightingEnabled: true
             )
             vc.delegate = context.coordinator
+            let tap = UITapGestureRecognizer(
+                target: context.coordinator,
+                action: #selector(Coordinator.handleScannerTap(_:))
+            )
+            tap.cancelsTouchesInView = false
+            vc.view.addGestureRecognizer(tap)
+            context.coordinator.dataScanner = vc
             try? vc.startScanning()
             return vc
         } else {
@@ -41,12 +54,21 @@ public struct CameraScannerView: UIViewControllerRepresentable {
 
     public final class Coordinator: NSObject, DataScannerViewControllerDelegate {
         let onCaptureFrame: (CGImage) -> Void
+        weak var dataScanner: DataScannerViewController?
         init(onCaptureFrame: @escaping (CGImage) -> Void) { self.onCaptureFrame = onCaptureFrame }
 
         public func dataScanner(_ dataScanner: DataScannerViewController,
                                 didTapOn item: RecognizedItem) {
-            // Capture the current camera frame and forward to the scanner pipeline.
-            dataScanner.capturePhoto { result in
+            capture(from: dataScanner)
+        }
+
+        @objc func handleScannerTap(_ gr: UITapGestureRecognizer) {
+            guard let scanner = dataScanner else { return }
+            capture(from: scanner)
+        }
+
+        private func capture(from scanner: DataScannerViewController) {
+            scanner.capturePhoto { result in
                 if case let .success(photo) = result, let cg = photo.image.cgImage {
                     self.onCaptureFrame(cg)
                 }
@@ -55,8 +77,9 @@ public struct CameraScannerView: UIViewControllerRepresentable {
     }
 }
 
-/// Minimal AVFoundation fallback for older devices.
-final class AVCaptureViewController: UIViewController {
+/// Minimal AVFoundation fallback for older devices. Tap the preview to
+/// capture a still and feed it into the scanner pipeline.
+final class AVCaptureViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     private let onFrame: (CGImage) -> Void
     private let session = AVCaptureSession()
     private let output = AVCapturePhotoOutput()
@@ -79,7 +102,23 @@ final class AVCaptureViewController: UIViewController {
         preview.videoGravity = .resizeAspectFill
         preview.frame = view.bounds
         view.layer.addSublayer(preview)
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tap)
+
         Task.detached(priority: .userInitiated) { [session] in session.startRunning() }
+    }
+
+    @objc private func handleTap() {
+        let settings = AVCapturePhotoSettings()
+        output.capturePhoto(with: settings, delegate: self)
+    }
+
+    func photoOutput(_ output: AVCapturePhotoOutput,
+                     didFinishProcessingPhoto photo: AVCapturePhoto,
+                     error: Error?) {
+        guard error == nil, let cg = photo.cgImageRepresentation() else { return }
+        onFrame(cg)
     }
 }
 #endif
